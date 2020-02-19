@@ -1,0 +1,10 @@
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\bin\Debug\GameJail.exe.config
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\bin\Debug\GameJail.exe
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\bin\Debug\GameJail.pdb
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.csprojAssemblyReference.cache
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.Form1.resources
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.Properties.Resources.resources
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.csproj.GenerateResource.cache
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.csproj.CoreCompileInputs.cache
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.exe
+D:\Vl\University\Projects\C#\Practice\GameJail\GameJail\obj\Debug\GameJail.pdb
