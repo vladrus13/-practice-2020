@@ -46,17 +46,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameForm.cs">
+    <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameForm.Designer.cs">
-      <DependentUpon>GameForm.cs</DependentUpon>
+    <Compile Include="MainScreen.Designer.cs">
+      <DependentUpon>MainScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OneComputerGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OneComputerGame.Designer.cs">
+      <DependentUpon>OneComputerGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OneComputerProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OneComputerProfile.Designer.cs">
+      <DependentUpon>OneComputerProfile.cs</DependentUpon>
     </Compile>
     <Compile Include="Profiles.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GameForm.resx">
-      <DependentUpon>GameForm.cs</DependentUpon>
+    <Compile Include="Result.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Result.Designer.cs">
+      <DependentUpon>Result.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="MainScreen.resx">
+      <DependentUpon>MainScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OneComputerGame.resx">
+      <DependentUpon>OneComputerGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OneComputerProfile.resx">
+      <DependentUpon>OneComputerProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -67,6 +91,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Result.resx">
+      <DependentUpon>Result.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

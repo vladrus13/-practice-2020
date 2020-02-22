@@ -15,7 +15,7 @@ namespace GameJail
         { }
     }
 
-    class Person // main class for profile. Contain name, password, number of wins and losses, number of hours spent in prison.
+    public class Person // main class for profile. Contain name, password, number of wins and losses, number of hours spent in prison.
     {
         public string name, password;
         public int won = 0, lose = 0, hours = 0;
