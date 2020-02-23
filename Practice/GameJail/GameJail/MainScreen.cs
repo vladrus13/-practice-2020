@@ -26,7 +26,9 @@ namespace GameJail
 
         private void InternetGameButton_Click(object sender, EventArgs e)
         {
-            //Form internetProfile = new InternetProfile();
+            InternetProfile internetProfile = new InternetProfile();
+            internetProfile.Show();
+            this.Hide();
         }
 
         private void MainScreen_FormClosed(object sender, FormClosedEventArgs e)

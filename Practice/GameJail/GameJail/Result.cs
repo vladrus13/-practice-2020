@@ -16,6 +16,7 @@ namespace GameJail
         private Person person1, person2;
         bool isAccuse1, isAccuse2;
         OneComputerGame OneComputerGame;
+        InternetGame InternetGame;
 
         private void OKButton_Click(object sender, EventArgs e)
         {
@@ -26,7 +27,8 @@ namespace GameJail
                 this.Hide();
             } else
             {
-                // INTERNET
+                InternetGame.Show();
+                this.Hide();
             }
         }
 
@@ -48,7 +50,7 @@ namespace GameJail
         private void showResultPerson()
         {
             Name1.Text = person1.name;
-            Game1.Text = person1.won.ToString();
+            Game1.Text = person1.games.ToString();
             Time1.Text = person1.hours.ToString();
             if (person2 == null)
             {
@@ -58,7 +60,7 @@ namespace GameJail
             } else
             {
                 Name2.Text = person2.name;
-                Game2.Text = person2.won.ToString();
+                Game2.Text = person2.games.ToString();
                 Time2.Text = person2.hours.ToString();
             }
         }
@@ -98,6 +100,11 @@ namespace GameJail
                 }
             }
             showResultPerson();
+            if (OneComputerGame != null)
+            {
+                person1.saveToFile();
+                person2.saveToFile();
+            }
         }
 
         public Result(OneComputerGame oneComputerGame, Person person1, Person person2, bool isAccuse1, bool isAccuse2)
@@ -111,6 +118,14 @@ namespace GameJail
             judge(isAccuse1, isAccuse2);
         }
 
-
+        public Result(InternetGame internetGame, Person person, bool isAccuse1, bool isAccuse2)
+        {
+            this.InternetGame = internetGame;
+            this.person1 = person;
+            this.isAccuse1 = isAccuse1;
+            this.isAccuse2 = isAccuse2;
+            InitializeComponent();
+            judge(isAccuse1, isAccuse2);
+        }
     }
 }

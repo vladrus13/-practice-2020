@@ -42,6 +42,7 @@ namespace GameJail
 
         private void LoadProfileButton_Click(object sender, EventArgs e)
         {
+            StatusBox.Text = "";
             String name1 = LoginBox.Text;
             String name2 = LoginBox2.Text;
             String password1 = PasswordBox.Text;
@@ -50,24 +51,41 @@ namespace GameJail
             {
                 person1 = new Person(name1, password1);
             }
-            catch (PersonException ex)
+            catch (FileSaveException ex)
             {
-                StatusBox.Text = "First user incorrect data" + ex.Message + "\n";
+                StatusBox.Text = "First user incorrect data: " + ex.Message + "\n";
             }
             try
             {
                 person2 = new Person(name2, password2);
             }
-            catch (PersonException ex)
+            catch (FileSaveException ex)
             {
-                StatusBox.Text += "Second user incorrect data" + ex.Message + "\n";
+                StatusBox.Text += "Second user incorrect data: " + ex.Message + "\n";
+            }
+            if (person1 != null && person1.games == 0)
+            {
+                StatusBox.Text += person1.name + " successful register!\n";
+            }
+            if (person2 != null && person2.games == 0)
+            {
+                StatusBox.Text += person2.name + " successful register!\n";
             }
             if (person1 != null && person2 != null)
             {
-                // start game
-                clearDataLoginPassword();
-                StartGameButton.Enabled = true;
+                if (person1.name == person2.name)
+                {
+                    StatusBox.Text += "It's so fun to play with yourself?";
+                }
+                else
+                {
+                    StatusBox.Text += "Loaded!!!";
+                    // start game
+                    clearDataLoginPassword();
+                    StartGameButton.Enabled = true;
+                }
             }
         }
+
     }
 }

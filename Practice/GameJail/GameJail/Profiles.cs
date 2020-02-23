@@ -8,17 +8,27 @@ using System.IO;
 namespace GameJail
 {
 
-    class PersonException : Exception
+    class FileSaveException : Exception
     {
-        public PersonException(string message)
+        public FileSaveException(string message)
          : base(message)
         { }
     }
 
     public class Person // main class for profile. Contain name, password, number of wins and losses, number of hours spent in prison.
     {
+        private IDataBase dataBase;
         public string name, password;
-        public int won = 0, lose = 0, hours = 0;
+        public Int64 games = 0, hours = 0;
+
+        public Person(string name, string password, Int64 games, Int64 hours, IDataBase dataBase)
+        {
+            this.name = name;
+            this.password = password;
+            this.games = games;
+            this.hours = hours;
+            this.dataBase = dataBase;
+        }
 
         public Person(string name, string password)
         {
@@ -35,49 +45,46 @@ namespace GameJail
             {
                 this.name = name;
                 this.password = password;
-                this.won = 0;
-                lose = 0;
+                this.games = 0;
                 hours = 0;
                 return;
             } catch (Exception e)
             {
-                throw new PersonException("Can't load or read profile file" + e.StackTrace);
+                throw new FileSaveException("Can't load or read profile file" + e.StackTrace);
             }
             if (line1 == null || line2 == null) {
-                throw new PersonException("Person file was modified");
+                throw new FileSaveException("Person file was modified");
             }
             string[] data = line1.Split(new char[] { ' ' });
-            if (data.Length != 5)
+            if (data.Length != 4)
             {
-                throw new PersonException("Person file was modified");
+                throw new FileSaveException("Person file was modified");
             }
             this.name = data[0];
             this.password = data[1];
             int checksum;
             try
             {
-                this.won = int.Parse(data[2]);
-                this.lose = int.Parse(data[3]);
-                this.hours = int.Parse(data[4]);
+                this.games = Int64.Parse(data[2]);
+                this.hours = Int64.Parse(data[3]);
                 checksum = int.Parse(line2);
             } catch (Exception)
             {
-                throw new PersonException("Person file was modified");
+                throw new FileSaveException("Person file was modified");
             }
-            if (won + lose + hours != checksum)
+            if (games + hours != checksum)
             {
-                throw new PersonException("Person file was modified");
+                throw new FileSaveException("Person file was modified");
+            }
+            if (password != this.password)
+            {
+                throw new FileSaveException("Incorrect login or password");
             }
         }
 
         public void incWon()
         {
-            won++;
-        }
-
-        public void incLosses()
-        {
-            lose++;
+            games++;
         }
 
         public void incHours(int added)
@@ -87,8 +94,8 @@ namespace GameJail
 
         public string toString()
         {
-            return name + ' ' + password + ' ' + won.ToString() + ' ' + lose.ToString() + ' ' + hours.ToString() + '\n' +
-                (won + lose + hours).ToString(); // last is checksum.
+            return name + ' ' + password + ' ' + games.ToString() + ' ' + hours.ToString() + '\n' +
+                (games + hours).ToString(); // last is checksum.
         }
 
         public void saveToFile() // can throw PersonException
@@ -102,7 +109,7 @@ namespace GameJail
                 writer.Close();
             } catch (Exception e)
             {
-                throw new PersonException("Can't load profile " + name + "\nException: " + e.Message);
+                throw new FileSaveException("Can't load profile " + name + "\nException: " + e.Message);
             }
         }
 
