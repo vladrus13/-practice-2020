@@ -24,6 +24,7 @@ namespace GameJail
             this.dataBase = dataBase;
             this.id = id;
             time = 30;
+            InitializeComponent();
             timer1.Start();
         }
 
@@ -32,16 +33,20 @@ namespace GameJail
             StatusBox.Text = "";
             time = 30;
             timer1.Start();
+            AccuseButton.Enabled = true;
+            SilenceButton.Enabled = true;
         }
 
         private void answer(bool isAccuse)
         {
             long hours = person.hours;
             long games = person.games;
+            AccuseButton.Enabled = false;
+            SilenceButton.Enabled = false;
             timer1.Stop();
             dataBase.SendAction(id, person.name, isAccuse ? 2 : 1);
             StatusBox.Text += "Waiting opponent...";
-            while (dataBase.GetPerson(person.name, person.password).hours == hours)
+            while (dataBase.GetPerson(person.name, person.password).games == games)
             {
                 System.Threading.Thread.Sleep(5000);
             }

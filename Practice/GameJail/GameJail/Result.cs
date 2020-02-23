@@ -73,14 +73,14 @@ namespace GameJail
         public void judge(bool isAccuse1, bool isAccuse2)
         {
             person1.incWon();
-            person2.incWon();
+            if (person2 != null) person2.incWon();
             if (!isAccuse1)
             {
                 if (!isAccuse2)
                 {
                     setResultLabel("Вы и ваш товарищ по несчастью не выдвинули против друг друга обвинительных показаний. Вам дали по году тюрьмы.");
                     person1.incHours(1);
-                    person2.incHours(1);
+                    if (person2 != null) person2.incHours(1);
                 } else
                 {
                     setResultLabel(person2.name + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - 10 лет тюрьмы! " + person2.name + " - свободен!");
@@ -91,12 +91,12 @@ namespace GameJail
                 if (!isAccuse2)
                 {
                     setResultLabel(person1.name + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - свободен! " + person2.name + " - 10 лет тюрьмы!");
-                    person2.incHours(10);
+                    if (person2 != null) person2.incHours(10);
                 } else
                 {
                     setResultLabel("Вы и ваш товарищ (или совсем не товарищ) по несчастью выдвинули против друг друга обвинительных показаний. Вам дали по два года тюрьмы.");
                     person1.incHours(2);
-                    person2.incHours(2);
+                    if (person2 != null) person2.incHours(2);
                 }
             }
             showResultPerson();

@@ -18,8 +18,8 @@ namespace GameJail
         public InternetProfile()
         {
             dataBase = new DataBase();
-            StartGameButton.Enabled = false;
             InitializeComponent();
+            StartGameButton.Enabled = false;
         }
        
 

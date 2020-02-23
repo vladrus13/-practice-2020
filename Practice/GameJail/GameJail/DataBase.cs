@@ -13,7 +13,8 @@ namespace GameJail
     {
         MySqlConnection sqlConnection = null;
 
-        public DataBase() {
+        public DataBase()
+        {
             try
             {
                 String host = "db4free.net";
@@ -22,12 +23,13 @@ namespace GameJail
                 String username = "alexvsalex";
                 String password = "Alex2000";
 
-                String connString = "Server=" + host + ";Database=" + database + ";port=" + port + ";User Id=" + username + ";password=" + password;
+                String connString = "Server=" + host + ";Database=" + database + ";old guids=true;Connect Timeout=30;port=" + port + ";User Id=" + username + ";password=" + password;
 
                 sqlConnection = new MySqlConnection(connString);
                 sqlConnection.Open();
             }
-            catch (MySqlException msexc) {
+            catch (MySqlException msexc)
+            {
                 throw new DataBaseException("cannot connect to server", msexc);
             }
         }
@@ -37,29 +39,29 @@ namespace GameJail
             try
             {
                 MySqlCommand cmd = new MySqlCommand("add_game", sqlConnection);
+
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 30;
+                cmd.Parameters.Add("l2", MySqlDbType.VarChar).Value = login;
 
-                cmd.Parameters.AddWithValue("l2", MySqlDbType.VarChar).Value = login;
-                
-                MySqlParameter resultParam = new MySqlParameter("@Result", MySqlDbType.Int64);
+                cmd.Parameters.Add(new MySqlParameter("result", MySqlDbType.Int64));
 
-                resultParam.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters["result"].Direction = ParameterDirection.Output;
 
-                cmd.Parameters.Add(resultParam);
-                
                 cmd.ExecuteNonQuery();
 
-                Int64 empNo;
-                if (resultParam.Value != DBNull.Value)
+                Int64 game_id = (Int64)cmd.Parameters["result"].Value;
+                if (game_id >= 0)
                 {
-                    empNo = (Int64)resultParam.Value;
-                    return empNo;
+                    return game_id;
                 }
-                else {
+                else
+                {
                     throw new DataBaseException("Database's problem");
                 }
             }
-            catch (MySqlException msexc) {
+            catch (MySqlException msexc)
+            {
                 throw new DataBaseException("Cannot find game", msexc);
             }
         }
@@ -69,28 +71,20 @@ namespace GameJail
             try
             {
                 MySqlCommand cmd = new MySqlCommand("is_both_in_game", sqlConnection);
+
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 30;
+                cmd.Parameters.Add("game_id", MySqlDbType.Int64).Value = id;
 
-                cmd.Parameters.AddWithValue("game_id", MySqlDbType.Int64).Value = id;
-                
-                MySqlParameter resultParam = new MySqlParameter("@Result", MySqlDbType.Bit);
+                cmd.Parameters.Add(new MySqlParameter("result", MySqlDbType.Int32));
 
-                resultParam.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters["result"].Direction = ParameterDirection.Output;
 
-                cmd.Parameters.Add(resultParam);
-                
                 cmd.ExecuteNonQuery();
 
-                Boolean empNo;
-                if (resultParam.Value != DBNull.Value)
-                {
-                    empNo = (Boolean) resultParam.Value;
-                    return empNo;
-                }
-                else
-                {
-                    throw new DataBaseException("Database's problem");
-                }
+                Boolean isOpponentFound = (Int32)cmd.Parameters["result"].Value == 1;
+                return isOpponentFound;
+
             }
             catch (MySqlException msexc)
             {
@@ -106,7 +100,7 @@ namespace GameJail
                 MySqlCommand cmd = new MySqlCommand("get_user", sqlConnection);
 
                 cmd.CommandType = CommandType.StoredProcedure;
-
+                cmd.CommandTimeout = 30;
                 cmd.Parameters.Add("l", MySqlDbType.VarChar).Value = login;
                 cmd.Parameters.Add("p", MySqlDbType.VarChar).Value = password;
 
@@ -115,12 +109,13 @@ namespace GameJail
 
                 cmd.Parameters["games_played"].Direction = ParameterDirection.Output;
                 cmd.Parameters["in_jail"].Direction = ParameterDirection.Output;
-               
+
                 cmd.ExecuteNonQuery();
-                
-                Int64 games_played = (Int64) cmd.Parameters["games_played"].Value;
-                Int64 in_jail = (Int64) cmd.Parameters["in_jail"].Value;
-                if (games_played == -1) {
+
+                Int64 games_played = (Int64)cmd.Parameters["games_played"].Value;
+                Int64 in_jail = (Int64)cmd.Parameters["in_jail"].Value;
+                if (games_played == -1)
+                {
                     throw new DataBaseException("wrong password");
                 }
 
@@ -140,13 +135,12 @@ namespace GameJail
             try
             {
                 MySqlCommand cmd = new MySqlCommand("do_action", sqlConnection);
-                
+
                 cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add("act", MySqlDbType.Int32).Value = action;
-                cmd.Parameters.Add("log", MySqlDbType.VarChar).Value = login;
+                cmd.CommandTimeout = 30;
                 cmd.Parameters.Add("game_id", MySqlDbType.Int64).Value = id;
-
+                cmd.Parameters.Add("log", MySqlDbType.VarChar).Value = login;
+                cmd.Parameters.Add("act", MySqlDbType.Int32).Value = action;
                 cmd.ExecuteNonQuery();
             }
             catch (MySqlException msexc)
@@ -155,19 +149,22 @@ namespace GameJail
             }
         }
 
-        ~DataBase() {
+        ~DataBase()
+        {
             sqlConnection.Close();
         }
     }
 
-    public class DataBaseException : Exception {
+    public class DataBaseException : Exception
+    {
         public DataBaseException(String message) : base(message)
         {
 
         }
 
-        public DataBaseException(String message, Exception cause) : base(message, cause){
-            
+        public DataBaseException(String message, Exception cause) : base(message, cause)
+        {
+
         }
     }
 }
