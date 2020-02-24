@@ -15,9 +15,11 @@ namespace GameJail
         private Person person1, person2;
         private bool isAccuse1 = false, isAccuse2 = false;
         private Result result;
+        OneComputerProfile OneComputerProfile;
 
-        public OneComputerGame(Person person1, Person person2)
+        public OneComputerGame(OneComputerProfile OneComputerProfile, Person person1, Person person2)
         {
+            this.OneComputerProfile = OneComputerProfile;
             this.person1 = person1;
             this.person2 = person2;
             InitializeComponent();
@@ -41,7 +43,7 @@ namespace GameJail
         {
             if (result == null)
             {
-                result = new Result(this, person1, person2, isAccuse1, isAccuse2);
+                result = new Result(OneComputerProfile, person1, person2, isAccuse1, isAccuse2);
             }
             else
             {

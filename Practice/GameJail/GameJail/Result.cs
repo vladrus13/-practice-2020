@@ -15,20 +15,20 @@ namespace GameJail
 
         private Person person1, person2;
         bool isAccuse1, isAccuse2;
-        OneComputerGame OneComputerGame;
-        InternetGame InternetGame;
+        OneComputerProfile OneComputerProfile;
+        InternetProfile InternetProfile;
 
         private void OKButton_Click(object sender, EventArgs e)
         {
             if (person2 != null)
             {
-                OneComputerGame.clear();
-                OneComputerGame.Show();
+                OneComputerProfile.clear(person1, person2);
+                OneComputerProfile.Show();
                 this.Hide();
             } else
             {
-                InternetGame.clear();
-                InternetGame.Show();
+                InternetProfile.clear(person1);
+                InternetProfile.Show();
                 this.Hide();
             }
         }
@@ -99,21 +99,19 @@ namespace GameJail
             }
             person1.incWon();
             person1.incHours(addedToHouse.Item1);
-            if (OneComputerGame != null)
+            if (OneComputerProfile != null)
             {
-                person1.incWon();
                 person2.incWon();
-                person1.incHours(addedToHouse.Item1);
-                person1.incHours(addedToHouse.Item2);
+                person2.incHours(addedToHouse.Item2);
                 person1.saveToFile();
                 person2.saveToFile();
             }
             showResultPerson();
         }
 
-        public Result(OneComputerGame oneComputerGame, Person person1, Person person2, bool isAccuse1, bool isAccuse2)
+        public Result(OneComputerProfile oneComputerProfile, Person person1, Person person2, bool isAccuse1, bool isAccuse2)
         {
-            this.OneComputerGame = oneComputerGame;
+            this.OneComputerProfile = oneComputerProfile;
             this.person1 = person1;
             this.person2 = person2;
             this.isAccuse1 = isAccuse1;
@@ -122,9 +120,9 @@ namespace GameJail
             judge(person1.name, person2.name, isAccuse1, isAccuse2);
         }
 
-        public Result(InternetGame internetGame, string login2, Person person, bool isAccuse1, bool isAccuse2)
+        public Result(InternetProfile internetProfile, string login2, Person person, bool isAccuse1, bool isAccuse2)
         {
-            this.InternetGame = internetGame;
+            this.InternetProfile = internetProfile;
             this.person1 = person;
             this.isAccuse1 = isAccuse1;
             this.isAccuse2 = isAccuse2;

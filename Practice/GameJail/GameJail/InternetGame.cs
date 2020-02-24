@@ -17,9 +17,11 @@ namespace GameJail
         int time = 30;
         long id;
         Result result;
+        InternetProfile InternetProfile;
 
-        public InternetGame(Person person, IDataBase dataBase, long id)
+        public InternetGame(InternetProfile InternetProfile, Person person, IDataBase dataBase, long id)
         {
+            this.InternetProfile = InternetProfile;
             this.person = person;
             this.dataBase = dataBase;
             this.id = id;
@@ -28,9 +30,10 @@ namespace GameJail
             timer1.Start();
         }
 
-        public void clear()
+        public void clear(long id)
         {
             StatusBox.Text = "";
+            this.id = id;
             time = 30;
             timer1.Start();
             AccuseButton.Enabled = true;
@@ -58,7 +61,7 @@ namespace GameJail
                     string nameSecond = (answer.Item1.Item1 != person.name ? answer.Item1.Item1 : answer.Item2.Item1);
                     if (result == null)
                     {
-                        result = new Result(this, nameSecond, person, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
+                        result = new Result(InternetProfile, nameSecond, person, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
                     } else
                     {
                         result.clear();
@@ -92,6 +95,11 @@ namespace GameJail
         private void SilenceButton_Click(object sender, EventArgs e)
         {
             answer(false);
+        }
+
+        private void InternetGame_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -14,12 +14,21 @@ namespace GameJail
     {
         IDataBase dataBase;
         Person person;
+        InternetGame internetGame;
 
         public InternetProfile()
         {
             dataBase = new DataBase();
             InitializeComponent();
             StartGameButton.Enabled = false;
+        }
+
+        public void clear(Person person)
+        {
+            this.person = person;
+            StatusBox.Text = "";
+            clearDataLoginPassword();
+            timer1.Stop();
         }
        
 
@@ -52,6 +61,8 @@ namespace GameJail
         {
             LoginBox.Text = "";
             PasswordBox.Text = "";
+            StartGameButton.Enabled = true;
+            LoadProfileButton.Enabled = true;
         }
 
         private void InternetProfile_FormClosed(object sender, FormClosedEventArgs e)
@@ -66,6 +77,8 @@ namespace GameJail
             StatusBox.Text += "Waiting opponent...\n";
             id = dataBase.FindGame(person.name);
             timer1.Start();
+            StartGameButton.Enabled = false;
+            LoadProfileButton.Enabled = false;
         }
 
         bool stopped = false;
@@ -74,11 +87,17 @@ namespace GameJail
         {
             if (!stopped)
             {
-                if (!dataBase.IsOpponentFound(id))
+                if (dataBase.IsOpponentFound(id))
                 {
                     stopped = true;
                     timer1.Stop();
-                    InternetGame internetGame = new InternetGame(person, dataBase, id);
+                    if (internetGame == null)
+                    {
+                        internetGame = new InternetGame(this, person, dataBase, id);
+                    } else
+                    {
+                        internetGame.clear(id);
+                    }
                     internetGame.Show();
                     this.Hide();
                 }

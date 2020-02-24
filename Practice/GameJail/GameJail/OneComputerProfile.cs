@@ -28,9 +28,16 @@ namespace GameJail
             PasswordBox2.Text = "";
         }
 
+        public void clear(Person person1, Person person2)
+        {
+            this.person1 = person1;
+            this.person2 = person2;
+            clearDataLoginPassword();
+        }
+
         private void StartGameButton_Click(object sender, EventArgs e)
         {
-            OneComputerGame OneComputerGame = new OneComputerGame(person1, person2);
+            OneComputerGame OneComputerGame = new OneComputerGame(this, person1, person2);
             OneComputerGame.Show();
             this.Hide();
         }

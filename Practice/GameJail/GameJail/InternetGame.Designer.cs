@@ -120,6 +120,7 @@
             this.Controls.Add(this.AccuseButton);
             this.Name = "InternetGame";
             this.Text = "InternetGame";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.InternetGame_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
