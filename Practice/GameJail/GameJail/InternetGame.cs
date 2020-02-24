@@ -43,33 +43,43 @@ namespace GameJail
             long games = person.games;
             AccuseButton.Enabled = false;
             SilenceButton.Enabled = false;
-            timer1.Stop();
             dataBase.SendAction(id, person.name, isAccuse ? 2 : 1);
             StatusBox.Text += "Waiting opponent...";
-            while (dataBase.GetPerson(person.name, person.password).games == games)
+            
+        }
+
+        private void goToResults()
+        {
+            if (time % 10 == 0)
             {
-                System.Threading.Thread.Sleep(5000);
+                Tuple<Tuple<String, int>, Tuple<String, int>> answer = dataBase.GetResult(id);
+                if (answer.Item1.Item2 != 0 && answer.Item2.Item2 != 0)
+                {
+                    string nameSecond = (answer.Item1.Item1 != person.name ? answer.Item1.Item1 : answer.Item2.Item1);
+                    if (result == null)
+                    {
+                        result = new Result(this, nameSecond, person, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
+                    } else
+                    {
+                        result.clear();
+                        result.judge(person.name, nameSecond, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
+                    }
+                }
             }
-            person = dataBase.GetPerson(person.name, person.password);
-            bool isAccuse1 = false, isAccuse2 = false;
-            switch (person.hours - hours)
-            {
-                case 0: isAccuse1 = true; isAccuse2 = false; break;
-                case 1: isAccuse1 = false; isAccuse2 = false; break;
-                case 2: isAccuse1 = true; isAccuse2 = true; break;
-                case 10: isAccuse1 = false; isAccuse2 = true; break;
-            }
-            result = new Result(this, person, isAccuse1, isAccuse2);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             time--;
-            TimerBox.Text = time.ToString();
+            if (time >= 0)
+            {
+                TimerBox.Text = time.ToString();
+            }
             if (time == 0)
             {
                 answer(false);
             }
+            goToResults();
         }
 
         private void AccuseButton_Click(object sender, EventArgs e)

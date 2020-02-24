@@ -46,7 +46,7 @@ namespace GameJail
             else
             {
                 result.clear();
-                result.judge(isAccuse1, isAccuse2);
+                result.judge(person1.name, person2.name, isAccuse1, isAccuse2);
             }
             result.Show();
             this.Hide();

@@ -27,6 +27,7 @@ namespace GameJail
                 this.Hide();
             } else
             {
+                InternetGame.clear();
                 InternetGame.Show();
                 this.Hide();
             }
@@ -70,41 +71,44 @@ namespace GameJail
             Application.Exit();
         }
 
-        public void judge(bool isAccuse1, bool isAccuse2)
+        public void judge(string login1, string login2, bool isAccuse1, bool isAccuse2)
         {
-            person1.incWon();
-            if (person2 != null) person2.incWon();
+            Tuple<int, int> addedToHouse;
             if (!isAccuse1)
             {
                 if (!isAccuse2)
                 {
                     setResultLabel("Вы и ваш товарищ по несчастью не выдвинули против друг друга обвинительных показаний. Вам дали по году тюрьмы.");
-                    person1.incHours(1);
-                    if (person2 != null) person2.incHours(1);
+                    addedToHouse = new Tuple<int, int>(1, 1);
                 } else
                 {
-                    setResultLabel(person2.name + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - 10 лет тюрьмы! " + person2.name + " - свободен!");
-                    person1.incHours(10);
+                    setResultLabel(login2 + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - 10 лет тюрьмы! " + person2.name + " - свободен!");
+                    addedToHouse = new Tuple<int, int>(10, 0);
                 }
             } else
             {
                 if (!isAccuse2)
                 {
-                    setResultLabel(person1.name + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - свободен! " + person2.name + " - 10 лет тюрьмы!");
-                    if (person2 != null) person2.incHours(10);
+                    setResultLabel(login1 + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - свободен! " + person2.name + " - 10 лет тюрьмы!");
+                    addedToHouse = new Tuple<int, int>(0, 10);
                 } else
                 {
                     setResultLabel("Вы и ваш товарищ (или совсем не товарищ) по несчастью выдвинули против друг друга обвинительных показаний. Вам дали по два года тюрьмы.");
-                    person1.incHours(2);
-                    if (person2 != null) person2.incHours(2);
+                    addedToHouse = new Tuple<int, int>(2, 2);
                 }
             }
-            showResultPerson();
+            person1.incWon();
+            person1.incHours(addedToHouse.Item1);
             if (OneComputerGame != null)
             {
+                person1.incWon();
+                person2.incWon();
+                person1.incHours(addedToHouse.Item1);
+                person1.incHours(addedToHouse.Item2);
                 person1.saveToFile();
                 person2.saveToFile();
             }
+            showResultPerson();
         }
 
         public Result(OneComputerGame oneComputerGame, Person person1, Person person2, bool isAccuse1, bool isAccuse2)
@@ -115,17 +119,17 @@ namespace GameJail
             this.isAccuse1 = isAccuse1;
             this.isAccuse2 = isAccuse2;
             InitializeComponent();
-            judge(isAccuse1, isAccuse2);
+            judge(person1.name, person2.name, isAccuse1, isAccuse2);
         }
 
-        public Result(InternetGame internetGame, Person person, bool isAccuse1, bool isAccuse2)
+        public Result(InternetGame internetGame, string login2, Person person, bool isAccuse1, bool isAccuse2)
         {
             this.InternetGame = internetGame;
             this.person1 = person;
             this.isAccuse1 = isAccuse1;
             this.isAccuse2 = isAccuse2;
             InitializeComponent();
-            judge(isAccuse1, isAccuse2);
+            judge(person.name, login2, isAccuse1, isAccuse2);
         }
     }
 }

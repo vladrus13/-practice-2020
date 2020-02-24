@@ -96,7 +96,6 @@ namespace GameJail
         {
             try
             {
-
                 MySqlCommand cmd = new MySqlCommand("get_user", sqlConnection);
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -146,6 +145,62 @@ namespace GameJail
             catch (MySqlException msexc)
             {
                 throw new DataBaseException("cannot send your action", msexc);
+            }
+        }
+
+        public void CloseGame(long id)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("close_game", sqlConnection);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 30;
+                cmd.Parameters.Add("game_id", MySqlDbType.Int64).Value = id;
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException msexc)
+            {
+                throw new DataBaseException("cannot close game", msexc);
+            }
+        }
+
+        public Tuple<Tuple<string, int>, Tuple<string, int>> GetResult(long id)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("get_game", sqlConnection);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 30;
+                cmd.Parameters.Add("game_id", MySqlDbType.Int64).Value = id;
+
+                cmd.Parameters.Add(new MySqlParameter("l1", MySqlDbType.VarChar));
+                cmd.Parameters.Add(new MySqlParameter("c1", MySqlDbType.Int32));
+                cmd.Parameters.Add(new MySqlParameter("l2", MySqlDbType.VarChar));
+                cmd.Parameters.Add(new MySqlParameter("c2", MySqlDbType.Int32));
+
+                cmd.Parameters["l1"].Direction = ParameterDirection.Output;
+                cmd.Parameters["c1"].Direction = ParameterDirection.Output;
+                cmd.Parameters["l2"].Direction = ParameterDirection.Output;
+                cmd.Parameters["c2"].Direction = ParameterDirection.Output;
+
+                cmd.ExecuteNonQuery();
+
+                String l1 = (String)cmd.Parameters["l1"].Value;
+                Int32 c1 = (Int32)cmd.Parameters["c1"].Value;
+                String l2 = (String)cmd.Parameters["l2"].Value;
+                Int32 c2 = (Int32)cmd.Parameters["c2"].Value;
+
+                Tuple<Tuple<string, int>, Tuple<string, int>> t =
+                    new Tuple<Tuple<string, int>, Tuple<string, int>>(
+                        new Tuple<string, int>(l1, c1),
+                        new Tuple<string, int>(l2, c2));
+                return t;
+            }
+            catch (MySqlException e)
+            {
+                throw new DataBaseException("cannot load profile", e);
             }
         }
 
