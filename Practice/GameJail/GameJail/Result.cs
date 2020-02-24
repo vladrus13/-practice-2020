@@ -40,6 +40,7 @@ namespace GameJail
 
         public void clear()
         {
+            ResultLabel.Text = "";
             Name1.Text = "";
             Name2.Text = "";
             Game1.Text = "";

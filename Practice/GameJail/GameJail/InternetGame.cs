@@ -58,6 +58,7 @@ namespace GameJail
                 Tuple<Tuple<String, int>, Tuple<String, int>> answer = dataBase.GetResult(id);
                 if (answer.Item1.Item2 != 0 && answer.Item2.Item2 != 0)
                 {
+                    timer1.Stop();
                     string nameSecond = (answer.Item1.Item1 != person.name ? answer.Item1.Item1 : answer.Item2.Item1);
                     if (result == null)
                     {

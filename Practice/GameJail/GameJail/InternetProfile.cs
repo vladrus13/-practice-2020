@@ -30,7 +30,7 @@ namespace GameJail
             clearDataLoginPassword();
             timer1.Stop();
         }
-       
+
 
         private void LoadProfileButton_Click(object sender, EventArgs e)
         {
@@ -40,7 +40,8 @@ namespace GameJail
             try
             {
                 person = dataBase.GetPerson(name, password);
-            } catch (DataBaseException ex)
+            }
+            catch (DataBaseException ex)
             {
                 StatusBox.Text += "Load failed: " + ex.Message;
             }
@@ -69,7 +70,7 @@ namespace GameJail
         {
             Application.Exit();
         }
-        
+
         long id;
 
         private void StartGameButton_Click_1(object sender, EventArgs e)
@@ -80,28 +81,24 @@ namespace GameJail
             StartGameButton.Enabled = false;
             LoadProfileButton.Enabled = false;
         }
-
-        bool stopped = false;
-
+        
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (!stopped)
+            if (dataBase.IsOpponentFound(id))
             {
-                if (dataBase.IsOpponentFound(id))
+                timer1.Stop();
+                if (internetGame == null)
                 {
-                    stopped = true;
-                    timer1.Stop();
-                    if (internetGame == null)
-                    {
-                        internetGame = new InternetGame(this, person, dataBase, id);
-                    } else
-                    {
-                        internetGame.clear(id);
-                    }
-                    internetGame.Show();
-                    this.Hide();
+                    internetGame = new InternetGame(this, person, dataBase, id);
                 }
+                else
+                {
+                    internetGame.clear(id);
+                }
+                internetGame.Show();
+                this.Hide();
             }
+
         }
     }
 }
