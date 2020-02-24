@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.LoadProfileButton = new System.Windows.Forms.Button();
             this.PasswordBox = new System.Windows.Forms.TextBox();
             this.LoginBox = new System.Windows.Forms.TextBox();
@@ -35,6 +36,7 @@
             this.LoginLabel = new System.Windows.Forms.Label();
             this.StartGameButton = new System.Windows.Forms.Button();
             this.StatusBox = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // LoadProfileButton
@@ -110,6 +112,11 @@
             this.StatusBox.Size = new System.Drawing.Size(199, 168);
             this.StatusBox.TabIndex = 25;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 3000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // InternetProfile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -139,5 +146,6 @@
         private System.Windows.Forms.Label LoginLabel;
         private System.Windows.Forms.Button StartGameButton;
         private System.Windows.Forms.Label StatusBox;
+        private System.Windows.Forms.Timer timer1;
     }
 }

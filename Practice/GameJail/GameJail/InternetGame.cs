@@ -64,6 +64,8 @@ namespace GameJail
                         result.clear();
                         result.judge(person.name, nameSecond, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
                     }
+                    this.Hide();
+                    result.Show();
                 }
             }
         }

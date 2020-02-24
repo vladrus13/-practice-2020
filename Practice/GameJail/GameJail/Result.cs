@@ -82,14 +82,14 @@ namespace GameJail
                     addedToHouse = new Tuple<int, int>(1, 1);
                 } else
                 {
-                    setResultLabel(login2 + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - 10 лет тюрьмы! " + person2.name + " - свободен!");
+                    setResultLabel(login2 + " выдвинул обвинительные показания против другого! Итог: " + login1 + " - 10 лет тюрьмы! " + login2 + " - свободен!");
                     addedToHouse = new Tuple<int, int>(10, 0);
                 }
             } else
             {
                 if (!isAccuse2)
                 {
-                    setResultLabel(login1 + " выдвинул обвинительные показания против другого! Итог: " + person1.name + " - свободен! " + person2.name + " - 10 лет тюрьмы!");
+                    setResultLabel(login1 + " выдвинул обвинительные показания против другого! Итог: " + login1 + " - свободен! " + login2 + " - 10 лет тюрьмы!");
                     addedToHouse = new Tuple<int, int>(0, 10);
                 } else
                 {
