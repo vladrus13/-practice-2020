@@ -59,14 +59,26 @@ namespace GameJail
                 if (answer.Item1.Item2 != 0 && answer.Item2.Item2 != 0)
                 {
                     timer1.Stop();
-                    string nameSecond = (answer.Item1.Item1 != person.name ? answer.Item1.Item1 : answer.Item2.Item1);
+                    string nameSecond;
+                    bool isAccuse1, isAccuse2;
+                    if (answer.Item1.Item1 == person.name)
+                    {
+                        nameSecond = answer.Item2.Item1;
+                        isAccuse1 = answer.Item1.Item2 == 1 ? false : true;
+                        isAccuse2 = answer.Item2.Item2 == 1 ? false : true;
+                    } else
+                    {
+                        nameSecond = answer.Item1.Item1;
+                        isAccuse1 = answer.Item2.Item2 == 1 ? false : true;
+                        isAccuse2 = answer.Item1.Item2 == 1 ? false : true;
+                    }
                     if (result == null)
                     {
-                        result = new Result(InternetProfile, nameSecond, person, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
+                        result = new Result(InternetProfile, nameSecond, person, isAccuse1, isAccuse2);
                     } else
                     {
                         result.clear();
-                        result.judge(person.name, nameSecond, (answer.Item1.Item2 == 1 ? false : true), (answer.Item2.Item2 == 1 ? false : true));
+                        result.judge(person.name, nameSecond, isAccuse1, isAccuse2);
                     }
                     this.Hide();
                     result.Show();
@@ -86,6 +98,11 @@ namespace GameJail
                 answer(false);
             }
             goToResults();
+            // if second person have problem with internet connection - send zero
+            if (time < -10)
+            {
+                dataBase.CloseGame(id);
+            }
         }
 
         private void AccuseButton_Click(object sender, EventArgs e)
